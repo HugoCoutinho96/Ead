@@ -14,6 +14,16 @@ export default class AulaBuilder {
         })
     }
 
+    comDuracao(duracao: number): AulaBuilder{
+        this.props.duracao = duracao
+        return this
+    }
+
+    semDuracao(): AulaBuilder{
+        this.props.duracao = undefined
+        return this
+    }
+
     comId(id: string): AulaBuilder {
         this.props.id = id
         return this

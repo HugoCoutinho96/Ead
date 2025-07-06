@@ -38,6 +38,10 @@ export default class Capitulo extends Entidade<Capitulo, CapituloProps> {
         return this.clone({aulas})
     }
 
+    moverAula(selecionada: Aula, posicao: number): Capitulo {
+        return this.removerAula(selecionada).adicionarAulas(selecionada, posicao)
+    }
+
     get quantidadeDeAulas(): number {
         return this.aulas.length
     }

@@ -42,6 +42,18 @@ export default class Capitulo extends Entidade<Capitulo, CapituloProps> {
         return this.removerAula(selecionada).adicionarAulas(selecionada, posicao)
     }
 
+    moverAulaParaCima(selecionada: Aula): Capitulo {
+        const posicao = this.aulas.findIndex(a => a.igual(selecionada))
+        const primeira = posicao === 0
+        return primeira ? this : this.moverAula(selecionada, posicao - 1)
+    }
+
+    moverAulaParaBaixo(selecionada: Aula): Capitulo {
+        const posicao = this.aulas.findIndex(a => a.igual(selecionada))
+        const ultima = posicao === this.aulas.length - 1
+        return ultima ? this : this.moverAula(selecionada, posicao + 1)
+    }
+
     get quantidadeDeAulas(): number {
         return this.aulas.length
     }

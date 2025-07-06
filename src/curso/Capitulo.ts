@@ -32,6 +32,12 @@ export default class Capitulo extends Entidade<Capitulo, CapituloProps> {
         return this.clone({aulas})
     }
 
+    removerAula(selecionada: Aula): Capitulo {
+        const outrasAulas = this.aulas.filter(a => a.diferente(selecionada))
+        const aulas = Capitulo.reatribuirOrdens(outrasAulas).map(a => a.props)
+        return this.clone({aulas})
+    }
+
     get quantidadeDeAulas(): number {
         return this.aulas.length
     }

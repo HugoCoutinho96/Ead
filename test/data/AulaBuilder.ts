@@ -14,6 +14,10 @@ export default class AulaBuilder {
         })
     }
 
+    static criarListaCom(qtde: number): Aula[] {
+        return Array.from({length: qtde}).map((valor, i) => AulaBuilder.criar().comOrdem(i + 1).agora())
+    }
+
     comDuracao(duracao: number): AulaBuilder{
         this.props.duracao = duracao
         return this

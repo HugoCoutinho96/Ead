@@ -5,7 +5,7 @@ export default class NomeSimples {
     readonly valor: string
 
     constructor(valor: string, minimo: number, maximo: number){
-        this.valor = valor.trim() ?? ''
+        this.valor = (valor ?? '').trim()
 
         const erros = Validador.combinar(
             Validador.naoVazio(this.valor, Erros.NOME_VAZIO),

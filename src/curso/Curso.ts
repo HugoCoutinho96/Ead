@@ -46,12 +46,18 @@ export default class Curso extends Entidade<Curso, CursoProps> {
         return this.clone({capitulos})
     }
 
+    removerAula(selecionado: Capitulo): Curso {
+        const outrosCapitulos = this.capitulos.filter(c => c.diferente(selecionado))
+        const capitulos = Curso.reatribuirOrdens(outrosCapitulos).map(c => c.props)
+        return this.clone({capitulos})
+    }
+
     get primeiroCapitulo() {
         return this.capitulos[0]
     }
 
     get ultimoCapitulo() {
-        return this.capitulos[this.quantidadeDeAulas - 1]
+        return this.capitulos[this.capitulos.length - 1]
     }
 
     private static calcularNumerosDoCurso(props: CursoProps) {

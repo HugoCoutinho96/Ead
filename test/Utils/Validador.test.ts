@@ -1,4 +1,4 @@
-import Validador from "@/Utils/Validador"
+import Validador from "@/utils/Validador"
 
 test("Deve retornar null com texto não nulo", () => {
     const erro = Validador.naoNulo("bom dia", "texto inválido")

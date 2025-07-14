@@ -5,6 +5,7 @@ import NomeSimples from "@/shared/NomeSimples";
 import Ordem from "@/shared/Ordem";
 import ErroValidacao from "@/error/ErroValidacao";
 import Erros from "@/constants/Erros";
+import Aula from "./Aula";
 
 export interface CursoProps extends EntidadeProps {
     nome?: string,
@@ -40,16 +41,44 @@ export default class Curso extends Entidade<Curso, CursoProps> {
         if(quantidadeDeAulas! <= 0) ErroValidacao.lancar(Erros.CURSO_SEM_AULAS)
     }
 
+    atualizarAula(selecionada: Aula): Curso {
+        const capitulos = this.capitulos.map(c => {
+            const aulas = c.aulas.map(a => (a.igual(selecionada) ? selecionada : a))
+            return {...c.props, aulas: aulas.map(a => a.props)} as CapituloProps
+        })
+        return this.clone({capitulos})
+    }
+
     adicionarCapitulo(capitulo: Capitulo, posicao?: number): Curso {
         const novosCapitulos = posicao !== undefined ? [...this.capitulos.slice(0, posicao), capitulo, ...this.capitulos.slice(posicao)] : [...this.capitulos, capitulo]
         const capitulos = Curso.reatribuirOrdens(novosCapitulos).map(a => a.props)
         return this.clone({capitulos})
     }
 
-    removerAula(selecionado: Capitulo): Curso {
+    removerCapitulo(selecionado: Capitulo): Curso {
         const outrosCapitulos = this.capitulos.filter(c => c.diferente(selecionado))
         const capitulos = Curso.reatribuirOrdens(outrosCapitulos).map(c => c.props)
         return this.clone({capitulos})
+    }
+
+    moverCapitulo(selecionado: Capitulo, posicao: number): Curso {
+        return this.removerCapitulo(selecionado).adicionarCapitulo(selecionado, posicao)
+    }
+
+    moverCapituloParaCima(selecionado: Capitulo): Curso {
+        const posicao = this.capitulos.findIndex(c => c.igual(selecionado))
+        const primeiro = posicao === 0
+        return primeiro ? this : this.moverCapitulo(selecionado, posicao - 1)
+    }
+
+    moverCapituloParaBaixo(selecionado: Capitulo): Curso {
+        const posicao = this.capitulos.findIndex(c => c.igual(selecionado))
+        const ultimo = posicao === this.capitulos.length - 1
+        return ultimo ? this : this.moverCapitulo(selecionado, posicao + 1)
+    }
+
+    get aulas(): Aula[] {
+        return this.capitulos.flatMap(c => c.aulas)
     }
 
     get primeiroCapitulo() {
